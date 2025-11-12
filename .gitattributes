@@ -1,1 +1,2 @@
 Snakefile linguist-language=Snakemake
+db_source/** linguist-detectable=false
