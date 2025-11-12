@@ -1,6 +1,5 @@
-# ntsm_smk
-Snakemake pipeline for generating pairwise PCA distance matrices and visual summaries between sequencing datasets using NTSM (https://github.com/JustinChu/ntsm).
-
+# SampleQC
+The Snakemake pipeline integrates NTSM and VerifyBamID to verify sample identity and detect potential contamination in sequencing data.
 
 ## Requirements
 - [Snakemake 7+](https://snakemake.readthedocs.io/)
@@ -18,13 +17,18 @@ Snakemake pipeline for generating pairwise PCA distance matrices and visual summ
 The manifest must include:
 - `ID` — Unique identifier for each dataset
 - `FOFN` — File-of-filenames (list of FASTQ/FASTA files)
+- `TYPE` - Sequencing platform or data type
+Choose one of the following:
+  - `PacBio`
+  - `ONT`
+  - `Illumina`
 
 Example:
 ```
-ID	FOFN
-SampleA	fofn/SampleA.fofn
-SampleB	fofn/SampleB.fofn
-SampleC	fofn/SampleC.fofn
+ID	FOFN	TYPE
+SampleA	fofn/SampleA.fofn	PacBio
+SampleB	fofn/SampleB.fofn	ONT
+SampleC	fofn/SampleC.fofn	Illumina
 ```
 
 
@@ -44,3 +48,8 @@ Important keys:
    ln -s /net/eichler/vol28/software/pipelines/ntsm_smk/runcluster .
    ./runcluster 30
 ```
+
+
+### References
+- NTSM: https://github.com/JustinChu/ntsm  
+- VerifyBamID: https://github.com/Griffan/VerifyBamID.git

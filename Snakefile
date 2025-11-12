@@ -19,9 +19,8 @@ SVDPREFIX = config.get("SVDPREFIX", "/net/eichler/vol26/7200/software/pipelines/
 
 command_dict = {}
 command_dict['ONT'] = 'minimap2 -ax map-ont -I 8G -t'
-command_dict['ONT_UL'] = 'minimap2 -ax map-ont -I 8G -t'
 command_dict['Illumina'] = 'bwa mem -Y -K 100000000 -t'
-command_dict['PacBio_HiFi'] = 'minimap2 -ax map-hifi -I 8G -t'
+command_dict['PacBio'] = 'minimap2 -ax map-hifi -I 8G -t'
 
 df = pd.read_csv(MANIFEST, sep="\t", header=0).set_index("ID", drop=True)
 
@@ -36,21 +35,7 @@ def find_command(wildcards):
 
 def find_aln_params(wildcards):
     data_type = df.loc[wildcards.id, 'TYPE']
-    if data_type in ['PacBio_HiFi']:
-        return ALN_PARAMS+" "+f"-R '@RG\\tID:{wildcards.id}\\tSM:{wildcards.id}\\tPL:PacBio_HiFi\\tLB:{data_type}'"
-    elif 'ONT' in data_type:
-        if data_type == 'ONT':
-            library="STD"
-        elif data_type == 'ONT_UL':
-            library="UL"
-        else:
-            library="Unknown"
-        return ALN_PARAMS+" "+f"-R '@RG\\tID:{wildcards.id}\\tSM:{wildcards.id}\\tPL:ONT\\tLB:{data_type}'"
-    elif data_type in ['Illumina']:
-        return ALN_PARAMS+" "+f"-R '@RG\\tID:{wildcards.id}\\tSM:{wildcards.id}\\tPL:{data_type}'"
-    else:
-        return ALN_PARAMS
-
+    return ALN_PARAMS+" "+f"-R '@RG\\tID:{wildcards.id}\\tSM:{wildcards.id}\\tPL:{data_type}'"
 
 def get_bed(wildcards):
     return f"{SVDPREFIX}.bed"
